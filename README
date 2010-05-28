@@ -1,0 +1,33 @@
+This project aims to contain Objective-C Classes
+that come in handy for Haskell Programmers.
+
+Here are some friends of makeObjectsPerformSelector:
+
+// this "function" is different than the built-in
+// "makeObjectsPerformSelector:" in the result type
+// (NSArray *) instead of (void).
+NSArray *results = [someArray mapSel:@selector(someSelector)];
+
+// as you would expect it comes with or without an object as parameter
+NSArray *results = [someArray mapSel:@selector(someSelector)
+                                 obj:someObject];
+
+// also have it the other way around
+NSArray *results = [someObject mapSel:@selector(someSelector)
+                                  arr:someArray;
+
+// The enclosing NSArray Category comes with a full load of similar
+// "functions" and with the (unjustified) high hopes that you will
+// "never" have to write a loop again by hand.
+
+// we can also zip array now
+NSArray *zippedArrays = [someArray zip:anotherArray];
+
+NSArray *zippedArrays = [someArray zipWith:@selector(someSelector
+                                       arr:anotherArray];
+
+
+
+
+
+
