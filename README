@@ -9,7 +9,7 @@ please have a look at a functional language as doing so will shurely
 enlighten your view on programming.
 
 Status of the project: Some functions were written (with care)
-but not tested. while this does usually work good for Haskell
+but not tested. While this does usually work good for Haskell
 it often fails for less abstract languages like Objective-C.
 Be warned and make shure your code works as expected.
 
@@ -23,13 +23,13 @@ Lets dive right in.
 The Class extenstions 'OHMapZipCategories' contains some friends of the
 "makeObjectsPerformSelector:"-Method that Apple failed to put in.
 People already familiar with the 'map', 'zip' and 'zipWith' functions will
-know what these methods do and find the right type for their needs.
+know what these Methods do and will find the right type for their needs.
 
 You should be able to write much less loops by hand. But beware that
-the compiler does not check if a selector can be performed on any object.
+the compiler does not check if a selector can be performed by any object.
 If you misspell a name you will encounter the problem at runtime.
-Fortunately this kind of error is easy to fix as the debug message will tell
-you exactly where the problem lies.
+Fortunately this kind of error is easy to fix as the debug message upon
+crash will tell you exactly where the problem lies.
 
 Here are some examples:
 
@@ -47,7 +47,7 @@ Here are some examples:
 
 Method (1) does indeed differ form "makeObjectsPerformSelector:". It does
 not only perform the selector it also collects the results and returns
-it as an NSArray.
+it as an (NSArray *).
 
 (2) As you might have guessed, there is also a correspondent for
 "makeObjectsPerformSelector:withObjects:".
@@ -62,7 +62,8 @@ Tuple. The new NSArray has the length of the shorter of the given arrays.
 the corresponding object of the second array. The results are returned.
 
 All Methods exist in a variant that returns (void) - if you are just
-interested in the side effects.
+interested in the side effects. Of course "makeObjectsPerformSelector:" is
+not reimplemented. Use it instead.
 
 Note that when using the variant that returns a (NSArray *) with a selector
 that usually returns an object but returns a nil in a particular case
@@ -71,33 +72,33 @@ a NSNull object is stored in the resulting array.
 What more is available?
 
 OHHelper
-some macros (min,max,min3,max3,fitRange <- on opened and closed intervals)
+contains some macros.
+(min,max,min3,max3,fitRange <- on opened and closed intervals)
 
 OHTuple
-like (a,b) but not type save ;) - it just stores two objects that can be
+is like (a,b) but not type save ;) - it just stores two objects that can be
 retrieved by calling 'fst' or 'snd'.
 
 OHFunction
-lets you store a Methode call in an object for later execution
+lets you store a Methode call in an object for later execution.
 
 OHFunctionCatImageGetter
-lets you store a Method that will load an image at a later time
+lets you store a Method that will load an image at a later time.
 
 OHLazyObject
-initialized with an OHFunction it will create an object when it is requested
+Initialized with an OHFunction it will create an object when it is requested
 and cache it for later use. On a memory warning the cache is cleared.
 
 OHLazyMutableArray
-using LazyObjects internally it just behaves like a normal array except
+Using LazyObjects internally it just behaves like a normal array except
 that you initialize it with OHFunctions. Upon request of an object the
-object is generated behind the scenes.
-On a memory warning the object gets released again - so if you have the
-object retained elsewhere, in order to free up the memory, release it there
-too (if possible).
+object is generated behind the scenes. On a memory warning the object gets
+released again - so if you have the object retained elsewhere, in order to
+free up the memory, release it there too (if possible).
 
 OHVector
 I dont know why but Apple has forgotten to add simple operations on vectors
-(CGPoint) .. or I just was unable to find them. Here there are a few.
+(CGPoint) ... or I was just unable to find them. Here there are a few.
 
 
-So have more FUN with Objective-C!
+Please have more FUN with Objective-C!
