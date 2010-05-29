@@ -8,8 +8,6 @@ as you can save writing unnecessary code. If you like the ideas here
 please have a look at a functional language as doing so will shurely
 enlighten your view on programming.
 
-Its contained Classes are
-
 Status of the project: Some functions were written (with care)
 but not tested. while this does usually work good for Haskell
 it often fails for less abstract languages like Objective-C.
