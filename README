@@ -1,11 +1,14 @@
 This project is a collection of Objective-C Classes
 that come in handy for Haskell programmers
+that are interested in developing with the iPhone SDK
 
 ... and other programmers with a functional background.
 For procedural programmers they should also be an enrichment
 as you can save writing unnecessary code. If you like the ideas here
 please have a look at a functional language as doing so will shurely
 enlighten your view on programming.
+
+Its contained Classes are
 
 Status of the project: Some functions were written (with care)
 but not tested. while this does usually work good for Haskell
@@ -62,5 +65,41 @@ the corresponding object of the second array. The results are returned.
 
 All Methods exist in a variant that returns (void) - if you are just
 interested in the side effects.
+
+Note that when using the variant that returns a (NSArray *) with a selector
+that usually returns an object but returns a nil in a particular case
+a NSNull object is stored in the resulting array.
+
+What more is available?
+
+OHHelper
+some macros (min,max,min3,max3,fitRange <- on opened and closed intervals)
+
+OHTuple
+like (a,b) but not type save ;) - it just stores two objects that can be
+retrieved by calling 'fst' or 'snd'.
+
+OHFunction
+lets you store a Methode call in an object for later execution
+
+OHFunctionCatImageGetter
+lets you store a Method that will load an image at a later time
+
+OHLazyObject
+initialized with an OHFunction it will create an object when it is requested
+and cache it for later use. On a memory warning the cache is cleared.
+
+OHLazyMutableArray
+using LazyObjects internally it just behaves like a normal array except
+that you initialize it with OHFunctions. Upon request of an object the
+object is generated behind the scenes.
+On a memory warning the object gets released again - so if you have the
+object retained elsewhere, in order to free up the memory, release it there
+too (if possible).
+
+OHVector
+I dont know why but Apple has forgotten to add simple operations on vectors
+(CGPoint) .. or I just was unable to find them. Here there are a few.
+
 
 So have more FUN with Objective-C!
