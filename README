@@ -7,6 +7,11 @@ as you can save writing unnecessary code. If you like the ideas here
 please have a look at a functional language as doing so will shurely
 enlighten your view on programming.
 
+Status of the project: Some functions were written (with care)
+but not tested. while this does usually work good for Haskell
+it often fails for less abstract languages like Objective-C.
+Be warned and make shure your code works as expected.
+
 A last word on this project: You are welcome to get involved or
 give feedback of any kind. You can use the mail form at
 http://n-mayr.de/ . Put "objc4hs" in the "Betreff" (=Subject) for
