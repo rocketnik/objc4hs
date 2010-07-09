@@ -8,7 +8,8 @@
 @property(nonatomic,retain) id fst;
 @property(nonatomic,retain) id snd;
 
-+(id)tuple:(id)firstElement :(id)secondElement;
--initWith: (id)firstElement :(id)secondElement;
++(id)tuple;
++(id)tupleWith:(id)firstElement :(id)secondElement;
+-(id)initWith: (id)firstElement :(id)secondElement;
 
 @end

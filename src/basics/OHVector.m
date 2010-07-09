@@ -40,6 +40,14 @@ CGSize szNomalize(     CGSize  a)          { float n = sqrt(a.width*a.width + a.
 void   szNormalizeInpl(pCGSize a)          { float n = sqrt(a->width*a->width + a->height*a->height); a->width /= n; a->height /= n; }
 
 
+CGPoint szToPt(CGSize  a) {
+    return CGPointMake(a.width, a.height);
+}
+
+CGSize  ptToSz(CGPoint a) {
+    return CGSizeMake(a.x, a.y);
+}
+
 float ptDist(CGPoint a, CGPoint b) {
     CGPoint d = CGPointMake(-a.x+b.x,-a.y+b.y);
     return sqrt(d.x*d.x+d.y*d.y);

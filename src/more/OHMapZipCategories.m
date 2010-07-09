@@ -73,6 +73,7 @@
 }
 
 -(void     )mapSel_:(SEL)sel {
+    Use(@"- (void)makeObjectsPerformSelector:(SEL)aSelector");
 	foroIn(self)
 		perf2(o,sel);
 }
@@ -85,6 +86,7 @@
 }
 
 -(void     )mapSel_:(SEL)sel obj:(NSObject *)obj {
+    Use(@"- (void)makeObjectsPerformSelector:(SEL)aSelector withObject:(id)anObject");
 	foroIn(self)
 		perf3(o,sel,obj);
 }
@@ -161,7 +163,7 @@
 	int cnt = min([self count],[arr count]);
 	arrCap(cnt);
 	fori(cnt)
-		arrAddObj([OHTuple tuple:[self objectAtIndex:i] :[arr objectAtIndex:i]]);
+		arrAddObj([OHTuple tupleWith:[self objectAtIndex:i] :[arr objectAtIndex:i]]);
 	return array;
 }
 

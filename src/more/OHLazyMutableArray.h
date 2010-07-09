@@ -19,4 +19,6 @@
 // the cache is internally automatically cleared on a low memory condition
 -(void)clearCache;
 
+-(void)printStatus;
+
 @end

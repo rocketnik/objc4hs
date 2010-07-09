@@ -1,6 +1,0 @@
-#define min(a,b) (((a)<(b))?(a):(b))
-#define max(a,b) (((a)<(b))?(b):(a))
-#define min3(a,b,c) min(min((a),(b)),(c))
-#define max3(a,b,c) max(max((a),(b)),(c))
-#define fitRangeClosed(a,l,r)  (((a)<(l))? (l) : (((a)>(r))? (r) : (a) ))
-#define fitRangeROpened(a,l,r) (((a)<(l))? (l) : (((a)>=(r))? ((r)-1) : (a) ))

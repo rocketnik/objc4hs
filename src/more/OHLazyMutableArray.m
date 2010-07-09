@@ -57,4 +57,12 @@
 	[super dealloc];	
 }
 
+-(void)printStatus {
+    int cnt=0;
+    int allCnt = [array count];
+    for (int i=0; i<allCnt; ++i)
+        if ([(OHLazyObject*)[array objectAtIndex:i] isCached]) ++cnt;
+    printf("OHLazyMutableArray %d %d/%d objects cached\n",(int)self,cnt,allCnt);
+}
+
 @end

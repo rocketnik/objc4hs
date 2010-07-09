@@ -4,8 +4,15 @@
 
 @synthesize fst,snd;
 
-+(id)tuple:(id)firstElement :(id)secondElement {
-	return [[[OHTuple alloc] initWith:firstElement :secondElement] autorelease];
++(id)tuple {
+    return [[[OHTuple alloc] init] autorelease];
+}
+
++(id)tupleWith:(id)firstElement :(id)secondElement {
+	OHTuple *tuple = [OHTuple tuple];
+    tuple.fst = firstElement;
+    tuple.snd = secondElement;
+    return tuple;
 }
 
 -(id)initWith:(id)firstElement :(id)secondElement {

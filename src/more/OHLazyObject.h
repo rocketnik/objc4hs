@@ -13,5 +13,6 @@
 
 // the cache is automatically cleared on a low memory condition
 -(void)clearCache;
+-(BOOL)isCached;
 
 @end

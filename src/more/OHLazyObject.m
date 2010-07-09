@@ -30,4 +30,8 @@
 	[super dealloc];	
 }
 
+-(BOOL)isCached {
+    return !!_object;
+}
+
 @end

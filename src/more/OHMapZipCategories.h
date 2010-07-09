@@ -2,6 +2,15 @@
 #import "OHHelper.h"
 #import "OHTuple.h"
 
+//OHDataList already supports map and zip using blocks
+//these methods come in handy when you use a runtime without blocks
+
+//map :: (a -> b) -> [a] -> [b]
+//zip :: [a] -> [b] -> [(a, b)]
+//zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
+//zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+//zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
+
 @interface NSObject (OHMapZipCategories)
 
 -(NSArray *)mapSel: (SEL)sel arr:(NSArray  *)arr;

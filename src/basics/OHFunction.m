@@ -42,9 +42,24 @@
 		case 2: return [obj performSelector:sel withObject:par1 withObject:par2];
 		case 1: return [obj performSelector:sel withObject:par1];
 		case 0: return [obj performSelector:sel];
-		default: NSLog(@"ERROR: CallbackFunction: parametercount %d impossible",parCnt);
+		default: NSLog(@"ERROR: OHFunction: call: parametercount %d impossible",parCnt);
 	}
 	return nil;
+}
+
+-(OHFunction *)par:(id)parameter {
+    OHFunction *newFunc = [self copy];
+    [newFunc addPar:parameter];
+    return newFunc;
+}
+
+-(void)addPar:(id)parameter {
+    switch (parCnt) {
+        case 0: par1 = [parameter retain]; break;
+        case 1: par2 = [parameter retain]; break;
+        default: NSLog(@"ERROR: OHFunction: par: too many parameters");
+    }
+    ++parCnt;
 }
 
 -(void)dealloc {
@@ -55,7 +70,7 @@
 }
 
 -(OHFunction *)semicolon:(OHFunction *)g {
-	return [OHFunction withObj:[OHFunction class] sel:@selector(evalSemicolon:) par:[OHTuple tuple:self :g]];
+	return [OHFunction withObj:[OHFunction class] sel:@selector(evalSemicolon:) par:[OHTuple tupleWith:self :g]];
 }
 
 +(id)evalSemicolon:(OHTuple *)tup {
