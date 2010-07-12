@@ -1,9 +1,8 @@
 #import "OHTree.h"
 
-#import "OHNSNullCatfromObj.h"
-#import "OHMapZipCategories.h"
-#import "OHNSArrayCatListOperations.h"
-#import "OHNSArrayCatCatMaybes.h"
+#import "OHAdditionsNSNull.h"
+#import "OHDataListNSArray.h"
+#import "OHAdditionsNSArray.h"
 
 @implementation OHTree
 
@@ -28,7 +27,7 @@
 -(NSArray *)flatten {
     NSMutableArray *array = [NSMutableArray array];
     [array addObject:[NSNull fromObj:self.rootLabel]];
-    [array addObjectsFromArray:[[self.subForest mapSel:@selector(flatten)] concat]];
+    [array addObjectsFromArray:[[self.subForest oh_mapSel:@selector(flatten)] oh_concat]];
     return array;
 }
 
@@ -41,17 +40,17 @@
     OHTree *tree;
     if ([predicate evaluateWithObject:self]) {
         tree = [OHTree treeWithLabel:self.rootLabel];
-        tree.subForest = [NSMutableArray arrayWithArray:[[self.subForest mapSel:@selector(filter) obj:predicate] catMaybes]];
+        tree.subForest = [NSMutableArray arrayWithArray:[[self.subForest oh_mapSel:@selector(filter) obj:predicate] oh_catMaybes]];
     }
     return tree;
 }
 
--(NSArray *)levels {
-    NSMutableArray *array = [NSMutableArray array];
-    
-    assert(NO);
-    return nil;
-}
+//-(NSArray *)levels {
+//    NSMutableArray *array = [NSMutableArray array];
+//    
+//    assert(NO);
+//    return nil;
+//}
 
 -(NSString *)description {
     return [NSString stringWithFormat:@"Tree { rootLabel=%@, subForest=%@ }",self.rootLabel,self.subForest];

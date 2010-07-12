@@ -1,5 +1,3 @@
-#import "OHHelper.h"
-
 @interface OHTuple : NSObject {
 	id fst;
 	id snd;

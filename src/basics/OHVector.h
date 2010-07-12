@@ -1,5 +1,3 @@
-#import <Foundation/Foundation.h>
-
 #define toPt(a) (*((CGPoint *)(&a)))
 #define toSz(a) (*((CGSize  *)(&a)))
 #define ptFromScalar(s) CGPointMake(s, s)
@@ -23,10 +21,10 @@ CGPoint ptCompMul(CGPoint  a, CGPoint  b);
 CGPoint ptCompDiv(CGPoint  a, CGPoint  b);
 CGPoint ptInv(    CGPoint  a);
 void    ptInvInpl(pCGPoint a);
-//float   dotProd( CGPoint   a,  CGPoint b)   // dot    product, scalar product, inner product 
-//        vecProd                             // vector product, cross  product, outer product
-// area
-// angle
+// TODO float   dotProd( CGPoint   a,  CGPoint b)   // dot    product, scalar product, inner product 
+// TODO         vecProd                             // vector product, cross  product, outer product
+// TODO         area
+// TODO         angle
 
 double  ptNorm(CGPoint a);
 CGPoint ptNormalize(     CGPoint a);
@@ -47,17 +45,17 @@ CGSize szCompDiv( CGSize  a, CGSize  b);
 CGSize szInv(     CGSize  a);
 void   szInvInpl( pCGSize a);
 
-float  szNorm(CGSize a);  // euklidian norm
+float  szNorm(CGSize a);            // euklidian norm
 CGSize szNomalize(     CGSize  a);
 void   szNormalizeInpl(pCGSize a);
 
 
-CGPoint szToPt(CGSize  a);  // there are also c macros which might be faster but unsafe
+CGPoint szToPt(CGSize  a);          // there are also c macros which might be faster but unsafe
 CGSize  ptToSz(CGPoint a);
 
 float ptDist(CGPoint a, CGPoint b); // euklidian distance
-int   ptQuadrant(CGPoint a); // quadrant
-int   ptOctant(  CGPoint a); // oktant
+int   ptQuadrant(CGPoint a);        // quadrant
+int   ptOctant(  CGPoint a);        // oktant
 
 CGRect rectMv(    CGRect  r, CGPoint p);
 void   rectMvInpl(pCGRect r, CGPoint p);

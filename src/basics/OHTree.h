@@ -1,5 +1,3 @@
-#import <Foundation/Foundation.h>
-
 @interface OHTree : NSObject {
     id rootLabel;
     NSMutableArray *subForest;
@@ -13,7 +11,7 @@
 +(id)treeWithLabel:(id)label subForest:(NSMutableArray *)forest;
 
 -(NSArray *)flatten;
--(NSArray *)levels;
+// TODO -(NSArray *)levels;
 -(OHTree *)filter:(NSPredicate *)predicate;
 
 @end

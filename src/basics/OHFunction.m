@@ -1,5 +1,7 @@
 #import "OHFunction.h"
 
+#import "OHTuple.h"
+
 @interface OHFunction ()
 
 +(id)evalSemicolon:(OHTuple *)tup;
