@@ -2,13 +2,16 @@
 
 @implementation NSArray (OHAdditionsNSArray)
 
--(id)firstObject {
+-(id)oh_firstObject {
     return ([self count])? [self objectAtIndex:0] : nil;
 }
 
-//TODO should exist in OHDataMaybeNSArray
--(NSArray *)oh_catMaybes {
-    return [self filteredArrayUsingPredicate:[NSCompoundPredicate notPredicateWithSubpredicate:[NSPredicate predicateWithFormat:@"isSubclassOfClass:[NSNull class]"]]];
+-(NSArray *)oh_sortedArrayUsingDescriptor:(NSSortDescriptor *)sortDescriptor {
+    return [self sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];    
+}
+
+-(id)oh_initWithObject:(id)obj {
+    return [[NSArray alloc] initWithObjects:obj,nil];
 }
 
 @end

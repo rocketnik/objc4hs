@@ -1,0 +1,5 @@
+@interface OHInfiniteArray : NSObject {
+
+}
+
+@end

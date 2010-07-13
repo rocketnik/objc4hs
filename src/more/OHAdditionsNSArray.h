@@ -2,7 +2,8 @@
 
 @interface NSArray (OHAdditionsNSArray)
 
--(id)firstObject;
--(NSArray *)oh_catMaybes;
+-(id)oh_firstObject;
+-(NSArray *)oh_sortedArrayUsingDescriptor:(NSSortDescriptor *)sortDescriptor;
+-(id)oh_initWithObject:(id)obj;
 
 @end

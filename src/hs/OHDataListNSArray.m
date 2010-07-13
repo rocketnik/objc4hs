@@ -6,6 +6,12 @@
 #import "OHAdditionsFoundation.h"
 #import "OHAdditionsNSNull.h"
 
+@interface NSArray (OHDataListNSArrayPrivate)
+
+-(BOOL)oh_elem:(id)obj by:(BOOL(^)(id,id))eq;
+
+@end
+
 @implementation NSArray (OHDataListNSArray)
 
 //(++) :: [a] -> [a] -> [a]
@@ -122,7 +128,15 @@
     return [[self oh_intersperse:arr] oh_concat];
 }
 
-//TODO transpose :: [[a]] -> [[a]]
+//transpose :: [[a]] -> [[a]]
+-(NSArray *)oh_transpose {
+    int cnt = [[[self oh_map:^(id arr){ return (id)[NSNumber numberWithInt:[(NSArray *)arr count]];}] minimum] intValue];
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:cnt];
+    for (int i=0; i<cnt; ++i)
+        [array addObject:[self oh_mapSel:@selector(objectAtIndex:) obj:(id)i]];
+    return array;
+}
+
 //TODO subsequences :: [a] -> [[a]]
 //TODO permutations :: [a] -> [[a]]
 //TODO foldl :: (a -> b -> a) -> a -> [b] -> a
@@ -141,6 +155,13 @@
         [array addObjectsFromArray:[self objectAtIndex:i]];
     }
     return array;
+}
+
+-(NSString *)oh_concatStr {
+    NSMutableString *string = [NSMutableArray string];
+    for (NSString *str in self)
+        [string appendString:str];
+    return string;
 }
 
 //concatMap :: (a -> [b]) -> [a] -> [b]
@@ -184,6 +205,8 @@
 }
 
 //sum :: Num a => [a] -> a
+//TODO als fold schreiben
+//TODO generisch schreiben mit funktion zum addieren
 -(double)oh_sumDouble {
     double sum = 0;
     for (NSNumber *num in self)
@@ -253,7 +276,6 @@
         sum += [num unsignedShortValue];
     return sum;
 }
-
 
 //product :: Num a => [a] -> a
 -(double)oh_productDouble {
@@ -326,8 +348,31 @@
     return product;
 }
 
-//TODO maximum :: Ord a => [a] -> a
-//TODO minimum :: Ord a => [a] -> a
+//maximum :: Ord a => [a] -> a
+//compare method needs to be implemented, wich is the case for NSNumber and NSString
+-(id)maximum {
+    int cnt = [self count];
+    id max = [self objectAtIndex:0];
+    for (int i=1; i<cnt; ++i) {
+        id cur = [self objectAtIndex:i];
+        if ([cur compare:max]>0)
+            max = cur;
+    }
+    return max;
+}
+
+//minimum :: Ord a => [a] -> a
+//see comment for maximum
+-(id)minimum {
+    id min = [self objectAtIndex:0];
+    int cnt = [self count];
+    for (int i=1; i<cnt; ++i) {
+        id cur = [self objectAtIndex:i];
+        if ([cur compare:min]<0)
+            min = cur;
+    }
+    return min;
+}
 //TODO scanl :: (a -> b -> a) -> a -> [b] -> [a]
 //TODO scanl1 :: (a -> a -> a) -> [a] -> [a]
 //TODO scanr :: (a -> b -> b) -> b -> [a] -> [b]
@@ -389,12 +434,77 @@
     return [self oh_drop:i];
 }
 
-//TODOspan :: (a -> Bool) -> [a] -> ([a], [a])
-//TODObreak :: (a -> Bool) -> [a] -> ([a], [a])
+//span :: (a -> Bool) -> [a] -> ([a], [a])
+-(OHTuple *)oh_span:(BOOL(^)(id))pred {
+    return [OHTuple tupleWith:[self oh_takeWhile:pred] :[self oh_dropWhile:pred]];
+}
+
+//break :: (a -> Bool) -> [a] -> ([a], [a])
+-(OHTuple *)oh_break:(BOOL(^)(id))pred {
+    return [self oh_span:^(id obj){ return (BOOL)!pred(obj);}];
+}
+
 //TODOstripPrefix :: Eq a => [a] -> [a] -> Maybe [a]
+
 //group :: Eq a => [a] -> [[a]]
-//TODOinits :: [a] -> [[a]]
-//TODOtails :: [a] -> [[a]]
+//you may want to use [NSSet setWithArray:array] instead
+-(NSArray *)oh_groupByEquality {
+    return [self oh_groupBy:^(id a, id b) { return [a isEqual:b];}];
+}
+
+-(NSArray *)oh_groupByPointer {
+    return [self oh_groupBy:^(id a, id b) { return (BOOL)(a == b);}];
+}
+
+-(NSArray *)oh_groupByPropertyEquality:(SEL)sel {
+    return [self oh_groupBy:^(id a, id b) { return [[a performSelector:sel] isEqual:[b performSelector:sel]];}];
+}
+
+//groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
+//TODO der code sieht beschämend aus. wie wäre es mit addobj, das das array zurückliefert
+// ausserdem verbrauchen wir durch die rekursiv angelegten arrays viel zu viel speicher
+-(NSArray *)oh_groupBy:(BOOL(^)(id a, id b))eq {
+    if (![self count]) {
+        return [NSArray array];
+    }
+    else {
+        id x = [self oh_head];
+        NSArray *xs = [self oh_tail];
+        OHTuple *tup = [xs oh_span:^(id a){return eq(x,a);}];
+        NSMutableArray *array = [NSMutableArray array];
+        [array addObject:x];
+        [array addObjectsFromArray:tup.fst];
+        [array addObjectsFromArray:[tup.snd oh_groupBy:eq]];
+        return array;
+    }
+}
+
+//inits :: [a] -> [[a]]
+-(NSArray *)oh_inits {
+    int cnt = [self count];
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:cnt];
+    for (int j=0; j<=cnt; ++j) {
+        NSMutableArray *subArr = [NSMutableArray arrayWithCapacity:j];
+        for (int i=0; i<j; ++i)
+            [subArr addObject:[self objectAtIndex:i]];
+        [array addObject:subArr];
+    }
+    return array;
+}
+
+//tails :: [a] -> [[a]]
+-(NSArray *)oh_tails {
+    int cnt = [self count];
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:cnt];
+    for (int j=0; j<cnt; ++j) {
+        NSMutableArray *subArray = [NSMutableArray arrayWithCapacity:cnt-j];
+        for (int i=j; i<cnt; ++i)
+            [subArray addObject:[self objectAtIndex:i]];
+        [array addObject:subArray];
+    }
+    return array;
+}
+
 //TODOisPrefixOf :: Eq a => [a] -> [a] -> Bool
 //TODOisSuffixOf :: Eq a => [a] -> [a] -> Bool
 //TODOisInfixOf :: Eq a => [a] -> [a] -> Bool
@@ -406,6 +516,15 @@
 //partition :: (a -> Bool) -> [a] -> ([a], [a])
 //(!!) :: [a] -> Int -> a
 //elemIndex :: Eq a => a -> [a] -> Maybe Int
+-(int)oh_elemIndex:(id)obj {
+    int cnt = [self count];
+    int i;
+    for (i=0; i<cnt; ++i) {
+        if ([self objectAtIndex:i] == obj)
+            break;
+    }
+    return (i<cnt)? i : -1;
+}
 //elemIndices :: Eq a => a -> [a] -> [Int]
 //findIndex :: (a -> Bool) -> [a] -> Maybe Int
 //findIndices :: (a -> Bool) -> [a] -> [Int]
@@ -431,19 +550,47 @@
 //words :: String -> [String]
 //unlines :: [String] -> String
 //unwords :: [String] -> String
+
 //nub :: Eq a => [a] -> [a]
+-(NSArray *)oh_nubByEquality {
+    return [self oh_nubBy:^(id a, id b){return [a isEqual:b];}];
+}
+
+-(NSArray *)oh_nubByPointer {
+    return [self oh_nubBy:^(id a, id b){return (BOOL)(a == b);}];
+}
+
+-(NSArray *)oh_nubByPropertyEquality:(SEL)sel {
+    return [self oh_nubBy:^(id a, id b){return [[a performSelector:sel] isEqual:[b performSelector:sel]];}];
+}
+
+//nubBy :: (a -> a -> Bool) -> [a] -> [a]
+-(NSArray *)oh_nubBy:(BOOL(^)(id,id))eq {
+    NSMutableArray *array = [NSMutableArray array];
+    for (id obj in self)
+        if (![array oh_elem:obj by:eq])
+            [array addObject:obj];
+    return array;
+}
+
+//elem_by :: (a -> a -> Bool) -> a -> [a] -> Bool
+-(BOOL)oh_elem:(id)obj by:(BOOL(^)(id,id))eq {
+    for (id o in self)
+        if(eq(obj,o)) return YES;
+    return NO;
+}
+
 //delete :: Eq a => a -> [a] -> [a]
 //(\\) :: Eq a => [a] -> [a] -> [a]
 //union :: Eq a => [a] -> [a] -> [a]
 //intersect :: Eq a => [a] -> [a] -> [a]
 //TODOsort :: Ord a => [a] -> [a]
+//wir brauchen eine implementierung von sort, die stable ist (die elemente nicht vertauscht)
 //insert :: Ord a => a -> [a] -> [a]
-//nubBy :: (a -> a -> Bool) -> [a] -> [a]
 //deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
 //deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 //unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 //intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-//groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 //sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 //insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]
 //maximumBy :: (a -> a -> Ordering) -> [a] -> a
